@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import Timer from "./components/Timer.tsx";
+import Timer from "./components/Timer/Timer.tsx";
+import RestartButton from "./components/RestartButton/RestartButton.tsx";
 
 const ROWS = 10;
 const COLS = 10;
@@ -60,6 +61,7 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false);
   const [hasWon, setHasWon] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+
   useEffect(() => {
     const handleMouseDown = () => setIsPressed(true);
     const handleMouseUp = () => setIsPressed(false);
@@ -70,18 +72,14 @@ export default function App() {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, []);
-  const getImageSrc = (): string => {
-    if (isPressed) return "./wow.png";
-    if (hasWon) return "./cools.png";
-    if (gameOver) return "./dead.png";
-    return "./smile1.png";
-  };
+
   function winAlert() {
-    alert("ты выйгарал, за столько секунд: " + document.querySelector(".timer")?.textContent);
+    alert(
+      "ты выйграал, за столько секунд: " +
+        document.querySelector(".timer")?.textContent
+    );
   }
-  const getImageStyle = (): React.CSSProperties => {
-    return isPressed ? { width: "45px", padding: "20px" } : { width: "90px" };
-  };
+
   const revealZeros = (newField: Cell[], index: number) => {
     const queue: number[] = [index];
     const visited = new Set<number>();
@@ -148,7 +146,7 @@ export default function App() {
         setHasWon(true);
         setHasStarted(false);
         newField.forEach((c) => (c.isRevealed = true));
-        setTimeout(function(){ winAlert()},100);
+        setTimeout(winAlert, 100);
       }
     }
 
@@ -167,9 +165,12 @@ export default function App() {
     <div className="container">
       <div className="containerHeader">
         <div>
-          <button className="restartButton" onClick={restartGame}>
-            <img src={getImageSrc()} alt="smile" style={getImageStyle()} />
-          </button>
+          <RestartButton
+            gameOver={gameOver}
+            hasWon={hasWon}
+            isPressed={isPressed}
+            onRestart={restartGame}
+          />
         </div>
         <div>
           <Timer key={timerKey} start={hasStarted} />
@@ -188,7 +189,11 @@ export default function App() {
             {cell.isRevealed && !cell.isBomb && cell.value > 0
               ? cell.value
               : ""}
-            {cell.isRevealed && cell.isBomb ? <img src="./bomba.png" alt="" style={{width:'30px'}}/> : ""}
+            {cell.isRevealed && cell.isBomb ? (
+              <img src="./bomba.png" alt="bomb" style={{ width: "30px" }} />
+            ) : (
+              ""
+            )}
           </div>
         ))}
       </div>
