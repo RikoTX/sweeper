@@ -4,7 +4,7 @@ import Timer from "./components/Timer.tsx";
 
 const ROWS = 10;
 const COLS = 10;
-const BOMBS = 1;
+const BOMBS = 10;
 
 type Cell = {
   isBomb: boolean;
@@ -76,6 +76,9 @@ export default function App() {
     if (gameOver) return "./dead.png";
     return "./smile1.png";
   };
+  function winAlert() {
+    alert("ты выйгарал, за столько секунд: " + document.querySelector(".timer")?.textContent);
+  }
   const getImageStyle = (): React.CSSProperties => {
     return isPressed ? { width: "45px", padding: "20px" } : { width: "90px" };
   };
@@ -145,6 +148,7 @@ export default function App() {
         setHasWon(true);
         setHasStarted(false);
         newField.forEach((c) => (c.isRevealed = true));
+        setTimeout(function(){ winAlert()},100);
       }
     }
 
@@ -184,7 +188,7 @@ export default function App() {
             {cell.isRevealed && !cell.isBomb && cell.value > 0
               ? cell.value
               : ""}
-            {cell.isRevealed && cell.isBomb ? "💣" : ""}
+            {cell.isRevealed && cell.isBomb ? <img src="./bomba.png" alt="" style={{width:'30px'}}/> : ""}
           </div>
         ))}
       </div>
