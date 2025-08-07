@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Timer from "./components/Timer.tsx";
 
 const ROWS = 10;
 const COLS = 10;
-const BOMBS = 10;
+const BOMBS = 1;
 
 type Cell = {
   isBomb: boolean;
@@ -144,6 +144,7 @@ export default function App() {
       if (checkWin(newField)) {
         setHasWon(true);
         setHasStarted(false);
+        newField.forEach((c) => (c.isRevealed = true));
       }
     }
 
