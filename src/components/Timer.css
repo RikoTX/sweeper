@@ -1,0 +1,19 @@
+.timer {
+  display: flex;
+  background-color: black;
+  padding: 5px;
+  border: 2px solid #666;
+  width: fit-content;
+  margin: 10px auto;
+}
+
+.digit {
+  font-family: "Digital Pixel", monospace;
+  font-weight: bold;
+  font-size: 32px;
+  color: red;
+  background-color: #111;
+  padding: 5px 10px;
+  margin: 0 1px;
+  box-shadow: inset -1px -1px 1px rgba(255, 0, 0, 0.3);
+}
